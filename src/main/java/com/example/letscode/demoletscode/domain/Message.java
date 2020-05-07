@@ -8,7 +8,6 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "messages")
 @Getter
 @Setter
 @AllArgsConstructor
