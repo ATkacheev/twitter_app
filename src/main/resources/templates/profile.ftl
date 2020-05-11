@@ -4,7 +4,7 @@
 
     <h5>${username}</h5>
 
-    ${message?if_exists}
+    ${message?ifExists}
     <form method="post">
 
         <div class="form-group row">

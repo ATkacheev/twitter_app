@@ -114,8 +114,8 @@ public class UserService implements UserDetailsService {
                 user.setActivationCode(UUID.randomUUID().toString());
             }
         }
-        if (StringUtils.isEmpty(password)){
-            user.setPassword(password);
+        if (!StringUtils.isEmpty(password)){
+            user.setPassword(passwordEncoder.encode(password));
         }
 
         userRepo.save(user);
