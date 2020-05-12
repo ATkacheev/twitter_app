@@ -5,7 +5,7 @@
                 <div class="col-sm-6">
                     <input type="text" name="username" value="<#if user??>${user.username}</#if>"
                            class="form-control ${(usernameError??)?string('is_invalid', '')}"
-                           placeholder="User name"/>
+                           placeholder="User name" />
                     <#if usernameError??>
                         <div class="invalid-feedback">
                             ${usernameError}
@@ -31,7 +31,7 @@
                 <label class="col-sm-2 col-form-label"> Password:</label>
                 <div class="col-sm-6">
                     <input type="password" name="password2"
-                           class="form-control ${(password2Error??)?string('is_invalid', '')}" placeholder="Retype password"/>
+                           class="form-control ${(password2Error??)?string('is_invalid', '')}" placeholder="Retype password" />
                     <#if password2Error??>
                         <div class="invalid-feedback">
                             ${password2Error}
@@ -43,7 +43,7 @@
             <label class="col-sm-2 col-form-label"> Email:</label>
             <div class="col-sm-6">
                 <input type="email" name="email" value="<#if user??>${user.email}</#if>"
-                       class="form-control ${(emailError??)?string('is_invalid', '')}" placeholder="some@some.com"/>
+                       class="form-control ${(emailError??)?string('is_invalid', '')}" placeholder="some@some.com" />
                 <#if emailError??>
                     <div class="invalid-feedback">
                         ${emailError}
@@ -61,11 +61,11 @@
             </div>
         </#if>
 
-        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+        <input type="hidden" name="_csrf" value="${_csrf.token}" />
         <#if !isRegisterForm>
         <a href="/registration"> Sign Up </a>
         </#if>
-        <button type="submit" class="btn btn-primary"/>
+        <button type="submit" class="btn btn-primary" />
         <#if isRegisterForm>Create
         <#else> Sign In</#if>
         </button>

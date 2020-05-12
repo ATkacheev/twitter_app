@@ -6,11 +6,12 @@
         <div class="card my-3">
             <div>
                 <#if message.filename??>
-                    <img class="card-img-top" src="/img/${message.filename}">
+                    <img class="card-img-top" src="/img/${message.filename}"/>
                 </#if>
             </div>
             <div class="m-2">
-                <span>${message.text}</span><br/>
+                <span>${message.text}</span>
+                <br/>
                 <i>#${message.tag}</i>
             </div>
             <div class="card-footer text-muted">

@@ -4,7 +4,7 @@
     <div class="form-row">
         <div class="form-group col md-6">
             <form method="get" action="/main" class="form-inline">
-                <input type="text" name="filter" class="form-control" value="${filter?if_exists}" placeholder="Search by tag">
+                <input type="text" name="filter" class="form-control" value="${filter!}" placeholder="Search by tag"/>
                 <button type="submit" class="btn btn-primary ml-2">Search</button>
             </form>
         </div>
@@ -12,7 +12,5 @@
 
     <#include "parts/message_edit.ftl"/>
     <#include "parts/message_list.ftl"/>
-
-
 
 </@c.page>
