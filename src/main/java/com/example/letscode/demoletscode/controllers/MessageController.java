@@ -70,9 +70,6 @@ public class MessageController {
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ) throws IOException {
 
-        Page<MessageDTO> page;
-        page = messageRepo.findByAuthor(user, pageable);
-
         message.setAuthor(user);
 
         if (bindingResult.hasErrors()){
@@ -89,9 +86,8 @@ public class MessageController {
 
         model.addAttribute("messages", allMessages);
         model.addAttribute("url", "/main");
-        model.addAttribute("page", page);
 
-        return "main";
+        return "redirect:/main";
     }
 
     private void saveFile(@Valid Message message, @RequestParam("file") MultipartFile file) throws IOException {

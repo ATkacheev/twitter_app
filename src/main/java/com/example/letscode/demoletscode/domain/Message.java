@@ -20,7 +20,7 @@ import java.util.Set;
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @NotBlank(message = "Please fill the message")
     @Length(max = 2048, message = "Message too long (More than 2KB)")

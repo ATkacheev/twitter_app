@@ -22,8 +22,6 @@ public interface MessageRepo extends CrudRepository<Message, Long> {
                     "group by m")
     Page<MessageDTO> findAll(Pageable pageable, @Param("user") User user);
 
-    Page<MessageDTO> findByAuthor(User user, Pageable pageable);
-
     @Query(
             "select new com.example.letscode.demoletscode.domain.dto.MessageDTO(" +
                     " m, " +
