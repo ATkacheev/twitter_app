@@ -1,5 +1,6 @@
 package com.example.letscode.demoletscode.domain;
 
+import com.example.letscode.demoletscode.domain.util.MessageHelper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,8 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -29,10 +32,18 @@ public class Message {
     @JoinColumn(name = "user_id")
     private User author;
 
+    @ManyToMany
+    @JoinTable(
+            name = "messages_likes",
+            joinColumns = {@JoinColumn(name = "message_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")}
+    )
+    private Set<User> likes = new HashSet<>();
+
     private String filename;
 
     public String getAuthorName(){
-        return author != null ? author.getUsername() : "<none>";
+        return MessageHelper.getAuthorName(author);
     }
 
     public Message(String text, String tag, User user) {
