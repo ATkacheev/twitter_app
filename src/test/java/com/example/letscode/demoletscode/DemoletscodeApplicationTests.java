@@ -1,6 +1,6 @@
 package com.example.letscode.demoletscode;
 
-import com.example.letscode.demoletscode.controllers.MainController;
+import com.example.letscode.demoletscode.controllers.MessageController;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ class DemoletscodeApplicationTests {
     private MockMvc mockMvc;
 
     @Autowired
-    private MainController mainController;
+    private MessageController messageController;
 
     @Test
     void contextLoads() throws Exception {

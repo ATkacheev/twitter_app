@@ -5,6 +5,10 @@ import com.example.letscode.demoletscode.domain.User;
 import com.example.letscode.demoletscode.repository.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,14 +28,14 @@ import java.util.Set;
 import java.util.UUID;
 
 @Controller
-public class MainController {
+public class MessageController {
     private final MessageRepo messageRepo;
 
     @Value(value = "${upload.path}")
     private String uploadPath;
 
     @Autowired
-    public MainController(MessageRepo messageRepo) {
+    public MessageController(MessageRepo messageRepo) {
         this.messageRepo = messageRepo;
     }
 
@@ -41,19 +45,22 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String main(@RequestParam(required = false, defaultValue = "") String filter, Model model){
-        Iterable<Message> messages;
+    public String main(@RequestParam(required = false, defaultValue = "") String filter,
+                       Model model,
+                       @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable){
+        Page<Message> page;
 
         if (filter != null && !filter.isEmpty()) {
-            messages = messageRepo.findByTag(filter);
-            if (messageRepo.findByTag(filter).isEmpty())
-                messages = messageRepo.findAll();
+            page = messageRepo.findByTag(filter, pageable);
+            if (messageRepo.findByTag(filter, pageable).isEmpty())
+                page = messageRepo.findAll(pageable);
         }
         else {
-            messages = messageRepo.findAll();
+            page = messageRepo.findAll(pageable);
         }
 
-        model.addAttribute("messages", messages);
+        model.addAttribute("page", page);
+        model.addAttribute("url", "/main");
         model.addAttribute("filter", filter);
         return "main";
     }
@@ -63,7 +70,12 @@ public class MainController {
             @Valid Message message,
             BindingResult bindingResult,
             Model model,
-            @RequestParam("file") MultipartFile file) throws IOException {
+            @RequestParam("file") MultipartFile file,
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
+    ) throws IOException {
+
+        Page<Message> page;
+        page = messageRepo.findByAuthor(user, pageable);
 
         message.setAuthor(user);
 
@@ -80,6 +92,8 @@ public class MainController {
         Iterable<Message> allMessages = messageRepo.findAll();
 
         model.addAttribute("messages", allMessages);
+        model.addAttribute("url", "/main");
+        model.addAttribute("page", page);
 
         return "main";
     }
@@ -106,8 +120,12 @@ public class MainController {
             @AuthenticationPrincipal User currentUser,
             @PathVariable User user,
             Model model,
-            @RequestParam(required = false) Message message
+            @RequestParam(required = false) Message message,
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
+
     ){
+        Page<Message> page;
+        page = messageRepo.findByAuthor(user, pageable);
         Set<Message> messages = user.getMessages();
         model.addAttribute("userChannel", user);
         model.addAttribute("subscriptionsCount", user.getSubscriptions().size());
@@ -116,7 +134,10 @@ public class MainController {
         model.addAttribute("message", message);
         model.addAttribute("isSubscriber", user.getSubscribers().contains(currentUser));
         model.addAttribute("isCurrentUser", currentUser.equals(user));
-        return "user_messages";
+        model.addAttribute("url", "/user-messages/" + user.getId());
+        model.addAttribute("page", page);
+
+        return "userMessages";
     }
     @PostMapping("/user-messages/{user}")
     public String updateMessage(
